@@ -2,23 +2,63 @@ import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc"; // Google Icon
 import uranus from "../assets/uranus.gif";
 import side from "../assets/side.gif";
+import {Toaster,toast} from "react-hot-toast"
+import axios from "axios"
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { setUser } from "../features/userSlice";
+// import { setUser } from './features/user/userSlice';
+
 
 const Homepage = () => {
   const [role, setRole] = useState("user"); // State to manage selected role
   const [email, setEmail] = useState(""); // State to manage selected role
   const [password, setPassword] = useState(""); // State to manage selected role
+  let navigate=useNavigate();
+  const dispatch = useDispatch();
 
   const handleRoleChange = (e) => {
     setRole(e.target.value);
   };
 
-  const handlesubmit=(e)=>{
-    e.preventDefault();
-    console.log(role,email,password)
-  }
+  const handleSubmit=async(e)=>{
+    e.preventDefault()
+    // let serverRoute=type=="sign-in" ? "/signin" :"/signup"
+
+    if(!email.length){
+       return toast.error("Enter your email")
+    }
+    await axios.post(import.meta.env.VITE_SERVER_DOMAIN+"/auth/signin",{
+      role:role,
+      email:email,
+      password:password
+      // formData,
+     }).then(({data})=>{
+      console.log(data)
+      // console.log(sessionStorage)
+      // localStorage.setItem('userdata',data)
+      toast.success(data.message)
+      dispatch(setUser(data.sendData));
+      if(data.sendData.role==='user'){
+        navigate('/home-admin')
+      }else{
+        
+        navigate('/')
+      }
+      return;
+      
+     })
+     .catch(err=>{
+      console.log(err)
+      return toast.error(err.response.data.message)
+      console.log("first")
+     })
+    
+ }
 
   return (
     <div className="flex h-screen ">
+      <Toaster/>
       {/* Left Section */}
       <div className="w-1/2 bg-gray-100 flex items-center justify-center">
         <img
@@ -132,7 +172,7 @@ const Homepage = () => {
             </div>
 
             {/* Buttons */}
-            <button className="w-full bg-black text-white py-3 rounded-lg mb-4 hover:bg-gray-800" onClick={(e)=>handlesubmit(e)}>
+            <button className="w-full bg-black text-white py-3 rounded-lg mb-4 hover:bg-gray-800" onClick={(e)=>handleSubmit(e)}>
               Log In
             </button>
 
