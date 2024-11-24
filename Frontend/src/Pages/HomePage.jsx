@@ -187,7 +187,7 @@ const Homepage = () => {
 
           <p className="text-sm text-gray-600 text-center mt-6">
             Don’t have an account?{" "}
-            <a href="#" className="text-blue-500 hover:underline">
+            <a href="/signup" className="text-blue-500 hover:underline">
               Sign Up
             </a>
           </p>

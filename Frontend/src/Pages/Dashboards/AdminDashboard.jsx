@@ -16,8 +16,26 @@ const TaskManagement = () => {
   return (
     <div className="pt-16">
       <div className="h-screen flex flex-col md:flex-row">
-        {/* Sidebar */}
-        <aside className="w-full md:w-1/6 bg-gray-100 p-4 shadow-md md:block">
+        {/* Categories (mobile view above main content, sidebar on large screens) */}
+        <nav className="w-full bg-white p-4 shadow-md md:hidden flex justify-between mb-4">
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`flex items-center space-x-2 text-gray-700 cursor-pointer py-2 px-4 rounded-full hover:bg-gray-200 ${
+                selectedCategory === category.id
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-100"
+              }`}
+            >
+              {category.icon}
+              <span>{category.name}</span>
+            </div>
+          ))}
+        </nav>
+
+        {/* Sidebar (hidden on mobile view, displayed on larger screens) */}
+        <aside className="w-1/6 bg-gray-100 p-4 shadow-md md:block hidden">
           <h2 className="text-xl font-bold mb-4 text-gray-700">Admin Panel</h2>
           <nav>
             <ul className="space-y-4">
@@ -48,6 +66,7 @@ const TaskManagement = () => {
             <div className="text-center">
               <h2 className="text-xl font-bold text-gray-700">Users Section</h2>
               <p className="text-gray-500">This is where user management would go.</p>
+              <UserTable />
             </div>
           )}
         </main>
