@@ -20,6 +20,12 @@ const taskSchema= new mongoose.Schema({
         },
         userid:{
             type:String,
+        },
+        title:{
+            type:String
+        },
+        priority:{
+            type:String
         }
 }, 
 { 

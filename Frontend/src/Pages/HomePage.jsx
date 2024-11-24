@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc"; // Google Icon
-import { GiStarSwirl } from "react-icons/gi";
-import uranus from "../assets/uranus.gif"
-import side from "../assets/side.gif"
+import uranus from "../assets/uranus.gif";
+import side from "../assets/side.gif";
 
 const Homepage = () => {
+  const [role, setRole] = useState("user"); // State to manage selected role
+  const [email, setEmail] = useState(""); // State to manage selected role
+  const [password, setPassword] = useState(""); // State to manage selected role
+
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
+
+  const handlesubmit=(e)=>{
+    e.preventDefault();
+    console.log(role,email,password)
+  }
+
   return (
     <div className="flex h-screen">
       {/* Left Section */}
       <div className="w-1/2 bg-gray-100 flex items-center justify-center">
         <img
-          src={side} // Replace with your GIF link
+          src={side}
           alt="Animated Bars"
           className="w-3/4"
         />
@@ -22,7 +34,9 @@ const Homepage = () => {
           {/* Logo */}
           <div className="flex justify-center mb-8">
             <div className="w-20 h-20 flex items-center justify-center">
-              <span className="text-black font-bold text-xl"><img src={uranus} alt=""  /></span>
+              <span className="text-black font-bold text-xl">
+                <img src={uranus} alt="" />
+              </span>
             </div>
           </div>
 
@@ -36,6 +50,7 @@ const Homepage = () => {
 
           {/* Form */}
           <form>
+            {/* Email Field */}
             <div className="mb-4">
               <label
                 htmlFor="email"
@@ -48,9 +63,11 @@ const Homepage = () => {
                 id="email"
                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your email"
+                onChange={(e)=>setEmail(e.target.value)}
               />
             </div>
 
+            {/* Password Field */}
             <div className="mb-4 relative">
               <label
                 htmlFor="password"
@@ -63,12 +80,45 @@ const Homepage = () => {
                 id="password"
                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your password"
+                onChange={(e)=>setPassword(e.target.value)}
               />
               <span className="absolute right-4 top-10 text-gray-400 cursor-pointer">
                 👁️
               </span>
             </div>
 
+            {/* Role Selection */}
+            <div className="mb-4">
+              <label className="text-sm text-gray-600 block mb-2">
+                Log in as:
+              </label>
+              <div className="flex items-center space-x-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="user"
+                    checked={role === "user"}
+                    onChange={handleRoleChange}
+                    className="mr-2"
+                  />
+                  User
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="role"
+                    value="admin"
+                    checked={role === "admin"}
+                    onChange={handleRoleChange}
+                    className="mr-2"
+                  />
+                  Admin
+                </label>
+              </div>
+            </div>
+
+            {/* Remember Me and Forgot Password */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
                 <input type="checkbox" id="remember" className="mr-2" />
@@ -81,17 +131,18 @@ const Homepage = () => {
               </a>
             </div>
 
-            <button className="w-full bg-black text-white py-3 rounded-lg mb-4 hover:bg-gray-800">
+            {/* Buttons */}
+            <button className="w-full bg-black text-white py-3 rounded-lg mb-4 hover:bg-gray-800" onClick={(e)=>handlesubmit(e)}>
               Log In
             </button>
 
-            <button
+            {/* <button
               type="button"
               className="w-full flex items-center justify-center bg-gray-100 py-3 rounded-lg border hover:bg-gray-200"
             >
               <FcGoogle className="mr-2 text-xl" />
               Log in with Google
-            </button>
+            </button> */}
           </form>
 
           <p className="text-sm text-gray-600 text-center mt-6">
