@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TaskList from "./TaskList";
 import { FaTasks, FaUser } from "react-icons/fa";
+import UserTable from "./Usertable";
 
 // Sidebar categories
 const categories = [
@@ -46,6 +47,7 @@ const TaskManagement = () => {
             <div className="text-center">
               <h2 className="text-xl font-bold text-gray-700">Users Section</h2>
               <p className="text-gray-500">This is where user management would go.</p>
+              <UserTable/>
             </div>
           )}
         </main>
