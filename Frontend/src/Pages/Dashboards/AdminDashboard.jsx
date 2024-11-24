@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import TaskList from "./TaskList";
 import { FaTasks, FaUser } from "react-icons/fa";
-import UserTable from "./Usertable";
-
-// Categories for task selection
+import { useSelector, useDispatch } from 'react-redux';
+// Sidebar categories
 const categories = [
   { id: "tasks", name: "Tasks", icon: <FaTasks className="text-lg" /> },
   { id: "users", name: "Users", icon: <FaUser className="text-lg" /> },
@@ -11,6 +10,8 @@ const categories = [
 
 const TaskManagement = () => {
   const [selectedCategory, setSelectedCategory] = useState("tasks");
+  const userData = useSelector((state) => state.user);
+  console.log(userData)
 
   return (
     <div className="pt-16">

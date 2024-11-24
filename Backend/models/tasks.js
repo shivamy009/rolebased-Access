@@ -11,7 +11,7 @@ const taskSchema= new mongoose.Schema({
             
         },
         endDate: {
-            type: Date(),
+            type: Date,
             required:true,
         },
         Taskmessage:{
@@ -20,6 +20,12 @@ const taskSchema= new mongoose.Schema({
         },
         userid:{
             type:String,
+        },
+        title:{
+            type:String
+        },
+        priority:{
+            type:String
         }
 }, 
 { 

@@ -8,10 +8,12 @@ require('dotenv').config()
 app.use(express.json())
 const database=require('./config/database')
 const authRoute=require('./routers/authRoute')
+const taskRoute=require('./routers/taskRouter')
 
 database()
 
 app.use('/api/v1/auth',authRoute)
+app.use('/api/v1/task',taskRoute)
 app.use('/ty',(req,res)=>{
     res.send("Hello")
 })
