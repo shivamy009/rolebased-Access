@@ -4,6 +4,7 @@ import Layout from "./Layout/Layout";
 import Homepage from "./Pages/HomePage";
 import TaskManagement from "./Pages/Dashboards/AdminDashboard";
 import User from "./Pages/Dashboards/UserDash/UserDashboard";
+import Signup from "./Pages/Signup";
 
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="*" element={<h1>Not Found</h1>} />
         <Route path="/home-admin" element={<Layout><TaskManagement/></Layout>} />
         <Route path="/home-user" element={<Layout><User/></Layout>} />
+        <Route path="/signup" element={<Signup/>} />
       </Routes>
     </Router>
   );

@@ -105,21 +105,23 @@ const TaskList = () => {
   return (
     <div className="pt-16">
       {/* Categories at the top */}
-      <div className="bg-white p-4 shadow-md flex justify-around mb-4 space-x-4">
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            onClick={() => setSelectedCategory(category.id)}
-            className={`flex items-center space-x-2 text-gray-700 cursor-pointer py-2 px-4 rounded-full hover:bg-gray-200 ${
-              selectedCategory === category.id
-                ? "bg-blue-500 text-white"
-                : "bg-gray-100"
-            }`}
-          >
-            {category.icon}
-            <span>{category.name}</span>
-          </div>
-        ))}
+      <div className="bg-white p-4 shadow-md mb-4">
+        <div className="flex flex-wrap justify-center sm:justify-start gap-4">
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`flex items-center space-x-2 text-gray-700 cursor-pointer py-2 px-4 rounded-full hover:bg-gray-200 ${
+                selectedCategory === category.id
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-100"
+              }`}
+            >
+              {category.icon}
+              <span>{category.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Task Section */}
@@ -167,43 +169,44 @@ const TaskList = () => {
         )}
       </div>
 
-      {/* Popup for Updating Status */}
-      {showPopup && currentTask && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-            <h2 className="text-xl font-bold mb-4">Update Task Status</h2>
-            <p className="mb-4">
-              Task: <strong>{currentTask.title}</strong>
-            </p>
-            <div className="space-y-4">
-              <button
-                onClick={() => handleStatusUpdate("completed")}
-                className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
-              >
-                Mark as Completed
-              </button>
-              <button
-                onClick={() => handleStatusUpdate("pending")}
-                className="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 transition"
-              >
-                Mark as Pending
-              </button>
-              <button
-                onClick={() => handleStatusUpdate("overdue")}
-                className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition"
-              >
-                Mark as Overdue
-              </button>
-            </div>
-            <button
-              onClick={handleClosePopup}
-              className="mt-4 w-full bg-gray-500 text-white py-2 rounded hover:bg-gray-600 transition"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+     {/* Popup for Updating Status */}
+{showPopup && currentTask && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+      <h2 className="text-xl font-bold mb-4 text-center">Update Task Status</h2>
+      <p className="mb-4 text-center">
+        Task: <strong>{currentTask.title}</strong>
+      </p>
+      <div className="space-y-4">
+        <button
+          onClick={() => handleStatusUpdate("completed")}
+          className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"
+        >
+          Mark as Completed
+        </button>
+        <button
+          onClick={() => handleStatusUpdate("pending")}
+          className="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 transition"
+        >
+          Mark as Pending
+        </button>
+        <button
+          onClick={() => handleStatusUpdate("overdue")}
+          className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600 transition"
+        >
+          Mark as Overdue
+        </button>
+      </div>
+      <button
+        onClick={handleClosePopup}
+        className="mt-4 w-full bg-gray-500 text-white py-2 rounded hover:bg-gray-600 transition"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

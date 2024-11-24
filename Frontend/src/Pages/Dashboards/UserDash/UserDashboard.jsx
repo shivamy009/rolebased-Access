@@ -80,30 +80,30 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className="flex h-screen pt-16">
+    <div className="flex flex-col md:flex-row h-screen pt-16">
       {/* Sidebar */}
-      <aside className="w-1/6 bg-gray-100 p-4">
-        <ul className="space-y-4">
+      <aside className="w-full md:w-auto bg-gray-100 p-4 md:block flex-none md:flex-col">
+        <div className="flex md:flex-col space-x-4 md:space-x-0 flex-wrap justify-center md:justify-start">
           {categories.map((category) => (
-            <li
+            <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`flex items-center space-x-2 cursor-pointer p-2 rounded ${
+              className={`flex items-center space-x-2 cursor-pointer p-2 rounded-full sm:rounded-none text-sm font-semibold transition-colors ${
                 selectedCategory === category.id
                   ? "bg-blue-500 text-white"
-                  : "text-gray-600 hover:bg-gray-200"
+                    : "bg-gray-20 text-gray-00"
               }`}
             >
               {category.icon}
               <span>{category.name}</span>
-            </li>
+            </button>
           ))}
-        </ul>
+        </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 p-4 bg-gray-50">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {tasks
             .filter((task) =>
               selectedCategory === "all" ? true : task.status === selectedCategory
@@ -150,7 +150,7 @@ const UserDashboard = () => {
       </main>
 
       {/* Task Analysis */}
-      <aside className="w-1/4 bg-gray-100 p-4">
+      <aside className="w-full md:w-1/4 bg-gray-100 p-4 mt-4 md:mt-0">
         <div className="bg-white p-4 rounded-lg shadow-md">
           <h3 className="font-bold text-center">Task Analysis</h3>
           <Doughnut data={data} options={chartOptions} />
