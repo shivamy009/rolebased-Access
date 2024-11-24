@@ -6,7 +6,7 @@ import side from "../assets/side.gif"
 
 const Homepage = () => {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen ">
       {/* Left Section */}
       <div className="w-1/2 bg-gray-100 flex items-center justify-center">
         <img
