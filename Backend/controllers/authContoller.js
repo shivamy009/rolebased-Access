@@ -138,8 +138,8 @@ exports.createUser= async(req,res)=>{
         }
 
         let hashpassword = await bcrypt.hash(password,10)
-
-        const admin = await new User ({
+        
+        const admin = await new Admin ({
                 fullname,email,password:hashpassword
         }).save()
 
