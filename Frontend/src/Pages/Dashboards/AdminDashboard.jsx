@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TaskList from "./TaskList";
 import { FaTasks, FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
+import UserTable from "./UserTable";
 // Sidebar categories
 const categories = [
   { id: "tasks", name: "Tasks", icon: <FaTasks className="text-lg" /> },
