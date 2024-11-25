@@ -110,7 +110,7 @@ exports.AdminSignup= async(req,res)=>{
 exports.createUser= async(req,res)=>{
     try{
         let {fullname,email,password}=req.body
-    
+console.log(fullname,email,password)
         if(!email || !password || !fullname){
             return res.status(400).json({
                 success:false,

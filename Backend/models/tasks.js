@@ -11,7 +11,7 @@ const taskSchema= new mongoose.Schema({
             
         },
         endDate: {
-            type: Date,
+            type: String,
             required:true,
         },
         Taskmessage:{

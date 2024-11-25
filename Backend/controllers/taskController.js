@@ -46,6 +46,7 @@ exports.Addtask= async(req,res)=>{
                Taskmessage:taskmessage,
                title:title,
                priority:priority,
+               endDate:req.body.endDate,
 
         }).save()
 
@@ -65,6 +66,40 @@ exports.Addtask= async(req,res)=>{
     }
  
 }
+ exports.updateTaskStatus = async (req, res) => {
+    const { taskId, newStatus } = req.body;
+  
+    try {
+      // Validate inputs
+      if (!taskId || !newStatus) {
+        return res.status(400).json({ message: "Task ID and new status are required." });
+      }
+  
+      // Find the task by ID and update its status
+      const updatedTask = await Task.findByIdAndUpdate(
+        taskId,
+        { status: newStatus },
+        { new: true, runValidators: true } // Return the updated task and validate the status
+      );
+  
+      // If task not found
+      if (!updatedTask) {
+        return res.status(404).json({ message: "Task not found." });
+      }
+  
+      // Return the updated task
+      res.status(200).json({
+        message: "Task status updated successfully.",
+        task: updatedTask,
+      });
+    } catch (error) {
+      console.error("Error updating task status:", error);
+      res.status(500).json({
+        message: "An error occurred while updating the task status.",
+        error: error.message,
+      });
+    }
+  };
 exports.createUser= async(req,res)=>{
     try{
         let {fullname,email,password}=req.body

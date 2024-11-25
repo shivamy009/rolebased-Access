@@ -12,7 +12,7 @@ const adminSchema= new mongoose.Schema({
         },
         role: {
             type: String,
-           default:"admmin",
+           default:"admin",
             // required: true,
            
         },
