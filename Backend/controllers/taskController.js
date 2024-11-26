@@ -365,6 +365,49 @@ exports.getAllUsers=async(req,res)=>{
         return { success: false, message: "Failed to fetch tasks", error };
     }
 }
+exports.deleteTask=async(req,res)=>{
+    try {
+        const taskId = req.params.id; // Extract task ID from request parameters
+
+        // Find the task by ID
+        const task = await Task.findById(taskId);
+
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+
+        const { issuedBy, issuedTo } = task;
+
+        // Delete the task
+        const taskDeletionResult = await Task.findByIdAndDelete(taskId);
+
+        if (issuedBy) {
+            // Remove task ID from admin's alltasks field
+            await Admin.findByIdAndUpdate(
+                issuedBy,
+                { $pull: { alltasks: taskId } },
+                { new: true }
+            );
+        }
+
+        if (issuedTo) {
+            // Remove task ID from user's alltasks field
+            await User.findByIdAndUpdate(
+                issuedTo,
+                { $pull: { alltasks: taskId } },
+                { new: true }
+            );
+        }
+
+        return res.status(200).json({
+            message: 'Task deleted successfully and references updated',
+            taskDeleted: !!taskDeletionResult,
+        });
+    } catch (error) {
+        console.error('Error deleting task:', error);
+        return res.status(500).json({ message: 'An error occurred while deleting the task', error });
+    }
+}
 // exports.uploadData=async(req,res)=>{
 //     console.log(req.user)
 //        res.send(req.body)

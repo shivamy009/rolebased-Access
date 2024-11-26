@@ -1,6 +1,6 @@
 const User = require('../models/userModel')
 const Admin = require('../models/adminModel')
-
+const Task = require('../models/tasks')
 const bcrypt = require('bcrypt')
 // import { nanoid } from 'nanoid'
 
@@ -299,18 +299,32 @@ exports.changePassword=async(req,res)=>{
 }
 
 
-
-
-
 exports.deleteuser=async(req,res)=>{
-    try{
-        let id=req.params.id;
-        
+    try {
+        const userId = req.params.id; // Extract user ID from request parameters
 
-    }catch(err){
-        console.log(err)
+        // Find the user by ID
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Delete all tasks assigned to the user
+        const taskDeletionResult = await Task.deleteMany({ _id: { $in: user.alltasks } });
+
+        // Delete the user
+        const userDeletionResult = await User.findByIdAndDelete(userId);
+
+        return res.status(200).json({
+            message: 'User and associated tasks deleted successfully',
+            tasksDeleted: taskDeletionResult.deletedCount,
+            userDeleted: !!userDeletionResult,
+        });
+    } catch (error) {
+        console.error('Error deleting user and tasks:', error);
+        return res.status(500).json({ message: 'An error occurred while deleting the user and tasks', error });
     }
-
 }
 
 // exports.uploadData=async(req,res)=>{
