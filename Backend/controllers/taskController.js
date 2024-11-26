@@ -52,6 +52,8 @@ exports.Addtask= async(req,res)=>{
             title: title,
             priority: priority,
             endDate: endDate, // Optional field
+            issuedBy: adminId, 
+            issuedTo: userid,
         }).save();
           
         // Push the task ID into the Admin's alltasks array

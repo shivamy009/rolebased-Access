@@ -26,7 +26,15 @@ const taskSchema= new mongoose.Schema({
         },
         priority:{
             type:String
-        }
+        },
+        issuedBy:{
+            type:String,
+            required:true
+        },
+        issuedTo:{
+            type:String,
+            required:true
+        },  
 }, 
 { 
     timestamps: {
