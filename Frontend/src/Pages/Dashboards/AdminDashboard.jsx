@@ -119,7 +119,7 @@ const TaskManagement = () => {
               <p className="text-gray-500">
                 This is where user management would go.
               </p>
-              <UserTable />
+              <UserTable accessToken={access_token} />
             </div>
           )}
         </main>

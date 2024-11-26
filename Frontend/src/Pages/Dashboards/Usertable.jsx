@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { FaTasks, FaTrash, FaUserEdit, FaPlus } from "react-icons/fa";
 import TaskForm from "./AssignTask";
 import axios from "axios"; // For API calls
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
-const UserTable = () => {
+
+const UserTable = ({accessToken}) => {
+  // console.log(accessToken,"iop")
   const [users, setUsers] = useState([]); // Store real-time user data
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [loading, setLoading] = useState(true); // Loading state
@@ -12,9 +15,6 @@ const UserTable = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [newUser, setNewUser] = useState({ fullname: "", email: "", password: "" });
   const userData = useSelector((state) => state.user);
-  const access_token = userData?.access_token;
-  const baseurl = import.meta.env.VITE_SERVER_DOMAIN;
-
   // Fetch users data from API
   useEffect(() => {
     fetchUsers();
@@ -39,21 +39,33 @@ const UserTable = () => {
     console.log("Users state updated:", users);
   }, [users]);
 
-
+  const baseurl = import.meta.env.VITE_SERVER_DOMAIN;
+  const access_token = userData?.access_token;
+  // useEffect(() => {
+  //   if (!userData?.access_token) {
+  //     navigate("/"); // Redirect to the homepage if no access_token
+  //   }
+  // }, [userData, navigate]);
   const handleAddUser = async () => {
-    try {
-      await axios.post(`${baseurl}/auth/createuser`, {
-        ...newUser,
+    await axios.post(import.meta.env.VITE_SERVER_DOMAIN+"/auth/createuser",{...newUser},
+      {
         headers:{
           'authorization': `${access_token}`
         }
-      }); // Replace with actual API endpoint
-      // fetchUsers(); // Refresh user list
-      setShowAddUserModal(false); // Close modal
-      setNewUser({ fullname: "", email: "", password: "" }); // Reset form
-    } catch (error) {
-      console.error("Error adding user:", error);
-    }
+      }
+      
+    ).then((data)=>{
+      // console.log(data.data.message)
+      toast.success(data.data.message)
+      setShowAddUserModal(false);
+      return;
+    })
+    .catch(({response})=>{
+       console.log(response)
+       return;
+      
+    })
+
   };
 
   const handleAssignTask = (user) => {
@@ -61,18 +73,19 @@ const UserTable = () => {
     setShowAssignTaskModal(true);
   };
 
-  const handleDeleteUser = async (userId) => {
-    try {
-      await axios.delete(`/api/users/${userId}`); // Replace with actual API endpoint
-      // fetchUsers(); // Refresh user list
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
-  };
-  console.log(users)
+  // const handleDeleteUser = async (userId) => {
+  //   try {
+  //     await axios.delete(`/api/users/${userId}`); // Replace with actual API endpoint
+  //     fetchUsers(); // Refresh user list
+  //   } catch (error) {
+  //     console.error("Error deleting user:", error);
+  //   }
+  // };
+  // console.log(localStorage.getItem('access_token'))
 
   return (
     <div className="p-4">
+      <Toaster/>
       <h1 className="text-xl font-bold mb-4">User Management</h1>
       <button
         onClick={() => setShowAddUserModal(true)}
