@@ -7,7 +7,7 @@ const router=express.Router();
 
 router.post('/addTask',requireSignin,Addtask)
 router.put('/updateTask',requireSignin,updateTaskStatus)
-router.get('/getallTasks/:id',getAllTasks)
+router.get('/getallTasks',requireSignin,getAllTasks)
 
 
 
