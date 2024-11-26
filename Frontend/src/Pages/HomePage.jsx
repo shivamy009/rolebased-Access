@@ -6,7 +6,7 @@ import {Toaster,toast} from "react-hot-toast"
 import axios from "axios"
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
-import { setUser } from "../features/userSlice";
+import { setAccessToken, setUser } from "../features/userSlice";
 // import { setUser } from './features/user/userSlice';
 
 
@@ -39,11 +39,14 @@ const Homepage = () => {
       // localStorage.setItem('userdata',data)
       toast.success(data.message)
       dispatch(setUser(data.sendData));
+      const token = "some-access-token"; // Replace with actual token logic
+       localStorage.setItem("access_token", data.sendData.access_token);
+       dispatch(setAccessToken(data.sendData.access_token));
       if(data.sendData.role==='user'){
-        navigate('/home-admin')
+        navigate('/')
       }else{
         
-        navigate('/')
+        navigate('/home-admin')
       }
       return;
       

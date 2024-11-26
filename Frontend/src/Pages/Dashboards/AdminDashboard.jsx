@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TaskList from "./TaskList";
 import { FaTasks, FaUser } from "react-icons/fa";
+
+// import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+// import UserTable from "./Usertable";
+
+
 import { useSelector, useDispatch } from 'react-redux';
-import UserTable from "./UserTable";
+import UserTable from "./Usertable";
+
+
 // Sidebar categories
 const categories = [
   { id: "tasks", name: "Tasks", icon: <FaTasks className="text-lg" /> },
@@ -12,7 +20,17 @@ const categories = [
 const TaskManagement = () => {
   const [selectedCategory, setSelectedCategory] = useState("tasks");
   const userData = useSelector((state) => state.user);
+  const navigate = useNavigate();
   console.log(userData)
+
+  // Check access_token and redirect if not present
+  
+  const access_token = userData?.access_token;
+  useEffect(() => {
+    if (!userData?.access_token) {
+      navigate("/"); // Redirect to the homepage if no access_token
+    }
+  }, [userData, navigate]);
 
   return (
     <div className="pt-16">
@@ -66,7 +84,9 @@ const TaskManagement = () => {
           ) : (
             <div className="text-center">
               <h2 className="text-xl font-bold text-gray-700">Users Section</h2>
-              <p className="text-gray-500">This is where user management would go.</p>
+              <p className="text-gray-500">
+                This is where user management would go.
+              </p>
               <UserTable />
             </div>
           )}

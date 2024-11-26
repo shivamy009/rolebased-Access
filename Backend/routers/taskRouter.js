@@ -1,12 +1,13 @@
 const express = require('express');
 // const { aa } = require('../controllers/authContoller');
 const { requireSignin } = require('../middleware/authmiddleware');
-const { Addtask, updateTaskStatus } = require('../controllers/taskController');
+const { Addtask, updateTaskStatus, getAllTasks } = require('../controllers/taskController');
 
 const router=express.Router();
 
-router.post('/addTask',Addtask)
-router.put('/updateTask',updateTaskStatus)
+router.post('/addTask',requireSignin,Addtask)
+router.put('/updateTask',requireSignin,updateTaskStatus)
+router.get('/getallTasks/:id',getAllTasks)
 
 
 
