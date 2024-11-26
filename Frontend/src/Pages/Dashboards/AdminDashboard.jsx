@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import TaskList from "./TaskList";
 import { FaTasks, FaUser } from "react-icons/fa";
-<<<<<<< HEAD
-import { useSelector } from "react-redux";
+
+// import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// import UserTable from "./Usertable";
+
+
+import { useSelector, useDispatch } from 'react-redux';
 import UserTable from "./Usertable";
 
-=======
-import { useSelector, useDispatch } from 'react-redux';
-import UserTable from "./UserTable";
->>>>>>> ff40f1ada5c00952ec01f5f11bf929d2f3f7c2c3
+
 // Sidebar categories
 const categories = [
   { id: "tasks", name: "Tasks", icon: <FaTasks className="text-lg" /> },

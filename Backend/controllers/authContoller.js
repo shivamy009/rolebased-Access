@@ -36,7 +36,8 @@ const formateDataforuser=(user)=>{
         email:user.email,
         fullname:user.fullname,
         role:user.role,
-        alltasks:user.alltasks
+        id:user._id
+      
        }
 }
 const formateDataforadmin=(user)=>{
@@ -46,8 +47,8 @@ const formateDataforadmin=(user)=>{
         profile_img:user.profile_img,
         email:user.email,
         fullname:user.fullname,
-        alltasks:user.alltasks,
-        allusers:user.allusers
+        id:user._id
+
        }
 }
 
@@ -111,6 +112,7 @@ exports.createUser= async(req,res)=>{
     try{
         let {fullname,email,password}=req.body
 console.log(fullname,email,password)
+let adminId=req.user.id;
         if(!email || !password || !fullname){
             return res.status(400).json({
                 success:false,
@@ -139,10 +141,14 @@ console.log(fullname,email,password)
 
         let hashpassword = await bcrypt.hash(password,10)
         
-        const admin = await new Admin ({
+        const user = await new Admin ({
                 fullname,email,password:hashpassword
         }).save()
-
+        const admin = await Admin.findByIdAndUpdate(
+            adminId, // Assuming the Admin's ID is passed in the request body
+            { $push: { allusers: user._id } }, // Push the new task ID into the alltasks array
+            { new: true } // Return the updated Admin document
+        );
         // let sendData=(admin)
 
         return res.status(200).json({

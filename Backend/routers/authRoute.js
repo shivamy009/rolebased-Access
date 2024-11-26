@@ -6,7 +6,6 @@ const router=express.Router();
 
 router.post('/adminsignup',AdminSignup)
 router.post('/signin',signIn)
-router.post('/createuser',createUser)
-
+router.post('/createuser',requireSignin,createUser)
 
 module.exports=router

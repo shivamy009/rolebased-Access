@@ -32,37 +32,52 @@ const formateDataforadmin=(user)=>{
 
 
 exports.Addtask= async(req,res)=>{
-    try{
-        let {taskmessage,title,priority}=req.body
-    
-        if(!taskmessage || !taskmessage || !priority){
+    try {
+        let { taskmessage, title, priority, endDate } = req.body; // Assuming `adminId` is passed in the request body.
+        let adminId=req.user.id
+        console.log(req.user)
+        // Check if all fields are provided
+        if (!taskmessage || !title || !priority) {
             return res.status(400).json({
-                success:false,
-                message:"Please Enter All field"
-            })
-    
+                success: false,
+                message: "Please enter all required fields",
+            });
         }
-        const tasks = await new Task ({
-               Taskmessage:taskmessage,
-               title:title,
-               priority:priority,
-               endDate:req.body.endDate,
 
-        }).save()
+        // Create a new task
+        const task = await new Task({
+            Taskmessage: taskmessage,
+            title: title,
+            priority: priority,
+            endDate: endDate, // Optional field
+        }).save();
 
+        // Push the task ID into the Admin's alltasks array
+        const admin = await Admin.findByIdAndUpdate(
+            adminId, // Assuming the Admin's ID is passed in the request body
+            { $push: { alltasks: task._id } }, // Push the new task ID into the alltasks array
+            { new: true } // Return the updated Admin document
+        );
 
+        if (!admin) {
+            return res.status(404).json({
+                success: false,
+                message: "Admin not found",
+            });
+        }
+
+        // Return success response
         return res.status(200).json({
-            success:true,
-            message:"Task assign success",
-        })
-    }
-    catch(e){
-        console.log(e)
-        return res.status(400).json({
-            success:false,
-            message:"Something went wrong while creating registration",
-
-        })
+            success: true,
+            message: "Task assigned successfully",
+            taskId: task._id, // Optional: Return the task ID
+        });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong while creating the task",
+        });
     }
  
 }
@@ -265,6 +280,39 @@ exports.changePassword=async(req,res)=>{
     })
 }
 
+exports.getAllTasks = async (req,res) => {
+    try {
+        // Find the admin by ID and populate the 'allTasks' field
+        let adminId=req.params.id;
+        console.log(adminId)
+        const admin = await Admin.findById(adminId).populate({
+            path:'alltasks',
+            
+        });
+        // console.log(admin)
+
+        // const user = await User.findById(id).populate({
+        //     path: 'courses',
+        //     select: 'title description price', // Only include title, description, and price fields
+        //   });
+
+        if (!admin) {
+            return res.status(200).json({
+                success:false,
+                message:"Somrthing went wrong"       
+             })
+        }
+
+        // Return the populated tasks
+        return res.status(200).json({
+       success:true,
+       admin:admin.alltasks       
+    })
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+        return { success: false, message: "Failed to fetch tasks", error };
+    }
+};
 // exports.uploadData=async(req,res)=>{
 //     console.log(req.user)
 //        res.send(req.body)
