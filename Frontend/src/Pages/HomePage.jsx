@@ -54,7 +54,7 @@ const Homepage = () => {
      .catch(err=>{
       console.log(err)
       return toast.error(err.response.data.message)
-      console.log("first")
+      // console.log("first")
      })
     
  }

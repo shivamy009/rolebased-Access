@@ -285,10 +285,16 @@ exports.getAllTasks = async (req,res) => {
         // Find the admin by ID and populate the 'allTasks' field
         let adminId=req.user.id;
         console.log(adminId)
-        const admin = await Admin.findById(adminId).populate({
+        const tasks = await Admin.findById(adminId).populate({
             path:'alltasks',
             
         });
+        const users = await Admin.findById(adminId).populate({
+            path:'allusers',
+            select:'_id profile_img fullname email '
+            
+        });
+
         // console.log(admin)
 
         // const user = await User.findById(id).populate({
@@ -296,7 +302,7 @@ exports.getAllTasks = async (req,res) => {
         //     select: 'title description price', // Only include title, description, and price fields
         //   });
 
-        if (!admin) {
+        if (!tasks) {
             return res.status(200).json({
                 success:false,
                 message:"Somrthing went wrong"       
@@ -306,7 +312,8 @@ exports.getAllTasks = async (req,res) => {
         // Return the populated tasks
         return res.status(200).json({
        success:true,
-       admin:admin.alltasks       
+       task:tasks.alltasks,
+       user:users.allusers 
     })
     } catch (error) {
         console.error("Error fetching tasks:", error);
@@ -339,7 +346,7 @@ exports.getAllUsers=async(req,res)=>{
         // Return the populated tasks
         return res.status(200).json({
        success:true,
-       admin:admin.alltasks       
+       admin:admin.allusers       
     })
     } catch (error) {
         console.error("Error fetching tasks:", error);
