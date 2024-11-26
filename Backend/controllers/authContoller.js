@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt')
 // import { nanoid } from 'nanoid'
 
 const jwt = require('jsonwebtoken')
+const adminModel = require('../models/adminModel')
 // const { use } = require('../router/userRoute')
 // const nanoid  = require('nanoid')
 
@@ -167,6 +168,23 @@ let adminId=req.user?.id;
     }
  
 }
+
+exports.fetchalluserOfAdmin=async(req,res)=>{   
+    let adminId=req.user?.id;
+try{
+    let admin = await Admin.findById(adminId).populate('allusers')
+    if(!admin){
+        return res.status(404).json({error:"Admin not found"})
+    }
+    return res.status(200).json({users:admin.allusers})
+}
+catch(err){
+    console.log(err)
+    return res.status(500).json({error:"Some error occured while fetching users"})
+}
+}
+
+    
 
 exports.signIn=async(req,res)=>{
     try{

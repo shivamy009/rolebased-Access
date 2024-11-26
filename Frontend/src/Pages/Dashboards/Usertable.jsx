@@ -2,37 +2,50 @@ import React, { useState, useEffect } from "react";
 import { FaTasks, FaTrash, FaUserEdit, FaPlus } from "react-icons/fa";
 import TaskForm from "./AssignTask";
 import axios from "axios"; // For API calls
-
+import { useSelector, useDispatch } from 'react-redux';
 
 const UserTable = () => {
   const [users, setUsers] = useState([]); // Store real-time user data
   const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [loading, setLoading] = useState(true); // Loading state
   const [showAssignTaskModal, setShowAssignTaskModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [newUser, setNewUser] = useState({ fullname: "", email: "", password: "" });
+  const userData = useSelector((state) => state.user);
+  const access_token = userData?.access_token;
+  const baseurl = import.meta.env.VITE_SERVER_DOMAIN;
 
   // Fetch users data from API
-  // useEffect(() => {
-  //   fetchUsers();
-  // }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
-  // const fetchUsers = async () => {
-  //   try {
-  //     const response = await axios.get("/api/users"); // Replace with actual API endpoint
-  //     setUsers(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching users:", error);
-  //   }
-  // };
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(`${baseurl}/auth/getusers`, {
+        headers: {
+          'authorization': `${access_token}`
+        }
+      });
+      console.log("Fetched users data:", response.data);
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setLoading(false); // Set loading to false after data is fetched
+    }
+  };
+  useEffect(() => {
+    console.log("Users state updated:", users);
+  }, [users]);
 
-  const baseurl = import.meta.env.VITE_SERVER_DOMAIN;
 
   const handleAddUser = async () => {
     try {
       await axios.post(`${baseurl}/auth/createuser`, {
         ...newUser,
-        headers: {
-          'authorization': `${localStorage.getItem('access_token')}`
+        headers:{
+          'authorization': `${access_token}`
         }
       }); // Replace with actual API endpoint
       // fetchUsers(); // Refresh user list
@@ -51,12 +64,12 @@ const UserTable = () => {
   const handleDeleteUser = async (userId) => {
     try {
       await axios.delete(`/api/users/${userId}`); // Replace with actual API endpoint
-      fetchUsers(); // Refresh user list
+      // fetchUsers(); // Refresh user list
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
-  console.log(localStorage.getItem('access_token'))
+  console.log(users)
 
   return (
     <div className="p-4">
@@ -81,31 +94,42 @@ const UserTable = () => {
             </tr>
           </thead>
           <tbody>
-            {users.length >0 && users?.map((user, index) => (
-              <tr key={user.id} className="hover:bg-gray-50">
-                <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">{user.fullname}</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">{user.email}</td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  <div className="flex justify-center space-x-4">
-                    <button
-                      onClick={() => handleAssignTask(user)}
-                      className="flex items-center text-green-600 hover:text-green-700 transition"
-                    >
-                      <FaTasks className="mr-2" />
-                      Assign Task
-                    </button>
-                    <button
-                      onClick={() => handleDeleteUser(user.id)}
-                      className="flex items-center text-red-600 hover:text-red-700 transition"
-                    >
-                      <FaTrash className="mr-2" />
-                      Delete User
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+          {loading ? (
+    <tr>
+      <td colSpan="5" className="text-center py-4">Loading...</td>
+    </tr>
+  ) : users && users.length > 0 ? (
+    users.map((user, index) => (
+      <tr key={user._id} className="hover:bg-gray-50">
+        <td className="border border-gray-300 px-4 py-2 text-center">{index + 1}</td>
+        <td className="border border-gray-300 px-4 py-2 text-center">{user.fullname}</td>
+        <td className="border border-gray-300 px-4 py-2 text-center">{user.email}</td>
+        <td className="border border-gray-300 px-4 py-2 text-center">
+          <div className="flex justify-center space-x-4">
+            <button
+              onClick={() => handleAssignTask(user)}
+              className="flex items-center text-green-600 hover:text-green-700 transition"
+            >
+              <FaTasks className="mr-2" />
+              Assign Task
+            </button>
+            <button
+              onClick={() => handleDeleteUser(user._id)}
+              className="flex items-center text-red-600 hover:text-red-700 transition"
+            >
+              <FaTrash className="mr-2" />
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="5" className="text-center py-4">No users found</td>
+    </tr>
+  )}
+
           </tbody>
         </table>
       </div>
