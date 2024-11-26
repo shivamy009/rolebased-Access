@@ -4,7 +4,8 @@ const adminSchema = require("../models/adminModel");
 
 exports.ChangeRole = async (req, res) => {
     try {
-        const { id, role } = req.body;
+        const { id } = req.body;
+        console.log(id)
         const user = await  userModel.findById(id);
         if (!user) {
             return res.status(404).json({ message: "User not found" });

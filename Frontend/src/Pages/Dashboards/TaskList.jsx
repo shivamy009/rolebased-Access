@@ -6,6 +6,7 @@ import {
   FaExclamationCircle,
   FaClipboardCheck,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 // Categories for task selection (All, Completed, Pending, Overdue, For Review)
 const categories = [
@@ -16,48 +17,7 @@ const categories = [
   { id: "review", name: "For Review", icon: <FaClipboardCheck className="text-lg text-blue-500" /> },
 ];
 
-const dummyTasks = [
-  {
-    id: 1,
-    title: "Plan Weekend Trip",
-    description: "Plan a weekend trip itinerary, including places to visit.",
-    created: "4 days ago",
-    priority: "low",
-    status: "pending",
-  },
-  {
-    id: 2,
-    title: "Team Meeting",
-    description: "Discuss project updates in the team meeting.",
-    created: "Yesterday",
-    priority: "high",
-    status: "completed",
-  },
-  {
-    id: 3,
-    title: "Update Resume",
-    description: "Revise and update your resume with recent work experience.",
-    created: "Today",
-    priority: "medium",
-    status: "pending",
-  },
-  {
-    id: 4,
-    title: "Submit Expense Report",
-    description: "Submit the expense report for last month.",
-    created: "1 week ago",
-    priority: "high",
-    status: "overdue",
-  },
-  {
-    id: 5,
-    title: "Review Project Plan",
-    description: "Review the project plan and provide feedback.",
-    created: "2 days ago",
-    priority: "medium",
-    status: "review",
-  },
-];
+
 
 const TaskList = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -65,6 +25,9 @@ const TaskList = () => {
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // Manage popup visibility
   const [currentTask, setCurrentTask] = useState(null); // Track selected task for popup
+  const userData = useSelector((state) => state.user);
+  //setting TAsk from redux
+
 
   useEffect(() => {
     setLoading(true);
@@ -72,13 +35,14 @@ const TaskList = () => {
     setTimeout(() => {
       // Filter tasks by selectedCategory (if it's "all", show all tasks)
       if (selectedCategory === "all") {
-        setTasks(dummyTasks);
+        setTasks(userData?.adminData?.data?.task);
       } else {
-        setTasks(dummyTasks.filter((task) => task.status === selectedCategory));
+        setTasks(tasks.filter((task) => task.status === selectedCategory));
       }
       setLoading(false);
     }, 500);
   }, [selectedCategory]);
+  console.log(tasks)
 
   // Handle opening the popup for a specific task
   const handleOpenPopup = (task) => {
@@ -136,8 +100,9 @@ const TaskList = () => {
                 className="bg-white shadow-md p-4 rounded-lg flex flex-col"
               >
                 <h3 className="font-bold text-gray-700">{task.title}</h3>
-                <p className="text-sm text-blue-500">Created at: {task.created}</p>
-                <p className="text-gray-600 text-sm mt-2">{task.description}</p>
+                <p className="text-sm text-blue-500">Created at: {task.updatedAt
+                }</p>
+                <p className="text-gray-600 text-sm mt-2">{task.Taskmessage}</p>
                 <div className="flex items-center justify-between mt-4">
                   <span
                     className={`text-sm font-semibold px-2 py-1 rounded-full ${

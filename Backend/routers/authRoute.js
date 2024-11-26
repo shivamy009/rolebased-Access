@@ -7,7 +7,7 @@ const router=express.Router();
 router.post('/adminsignup',AdminSignup)
 router.post('/signin',signIn)
 router.post('/createuser',requireSignin,createUser)
-router.put('/updateuser',ChangeRole)
+router.put('/updateuser',requireSignin,ChangeRole)
 //fetch all users of an admin
 router.get('/getusers',requireSignin,fetchalluserOfAdmin);
  

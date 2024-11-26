@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 // import { nanoid } from 'nanoid'
 
 const jwt = require('jsonwebtoken')
+const userModel = require('../models/userModel')
 
 const formateDataforuser=(user)=>{
        const access_token=jwt.sign({id:user._id},process.env.JWT_SECRET)
@@ -33,16 +34,17 @@ const formateDataforadmin=(user)=>{
 
 exports.Addtask= async(req,res)=>{
     try {
-        let { taskmessage, title, priority, endDate } = req.body; // Assuming `adminId` is passed in the request body.
+       const { taskmessage, title, priority, endDate ,userid} = req.body; // Assuming `adminId` is passed in the request body.
         let adminId=req.user.id
-        console.log(req.user)
+        // console.log(req.user)
+        console.log(taskmessage, title, priority, endDate,userid)
         // Check if all fields are provided
         if (!taskmessage || !title || !priority) {
             return res.status(400).json({
                 success: false,
                 message: "Please enter all required fields",
             });
-        }
+        } 
 
         // Create a new task
         const task = await new Task({
@@ -51,7 +53,7 @@ exports.Addtask= async(req,res)=>{
             priority: priority,
             endDate: endDate, // Optional field
         }).save();
-
+          
         // Push the task ID into the Admin's alltasks array
         const admin = await Admin.findByIdAndUpdate(
             adminId, // Assuming the Admin's ID is passed in the request body
@@ -65,6 +67,14 @@ exports.Addtask= async(req,res)=>{
                 message: "Admin not found",
             });
         }
+
+         //push this task to user alltaskarray
+            const user = await userModel.findByIdAndUpdate(
+               userid, // Assuming the Admin's ID is passed in the request body
+                { $push: { alltasks: task._id } }, // Push the new task ID into the alltasks array
+                { new: true } // Return the updated Admin document
+            );
+
 
         // Return success response
         return res.status(200).json({

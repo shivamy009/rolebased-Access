@@ -1,7 +1,12 @@
+import axios from "axios";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { FaClipboardList, FaRegCalendarAlt, FaCommentDots, FaFlag } from "react-icons/fa";
 
-const TaskForm = ({ user, onClose }) => {
+
+const TaskForm = ({ user, onClose, token }) => {
+ 
+  const baseurl = import.meta.env.VITE_SERVER_DOMAIN;
   const [formData, setFormData] = useState({
     title: "",
     message: "",
@@ -16,12 +21,37 @@ const TaskForm = ({ user, onClose }) => {
       [name]: value,
     }));
   };
-
-  const handleSubmit = (e) => {
+  const formatttedData ={
+    title: formData.title,
+    taskmessage: formData.message,
+    priority: formData.priority,  
+    endDate: formData.lastDate
+  }
+ 
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(`Task assigned to ${user.fullname}:`, formData);
-    alert(`Task successfully assigned to ${user.fullname}`);
-    onClose(); // Close modal after submission
+    try {
+      console.log(formatttedData)
+      const response = await axios.post(
+        `${baseurl}/task/addTask`,
+        { title: formData.title,taskmessage: formData.message,priority: formData.priority,endDate: formData.lastDate, userid:user._id },
+        {
+          headers: {
+            authorization: `${token}`,
+          },
+        }
+      );
+      toast.success(response.data.message);
+      onClose(); // Close modal after submission
+      // setShowAssignTaskModal(false);
+      console.log(`Task assigned to ${user.fullname}:`, formData);
+      alert(`Task successfully assigned to ${user.fullname}`);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error assigning task");
+      console.log(error)
+    }
+    
+    
   };
 
   return (
@@ -129,6 +159,13 @@ const TaskForm = ({ user, onClose }) => {
         >
           Assign Task
         </button>
+        <button
+          onClick={onClose}
+          className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition font-semibold mt-4"
+        >
+          Cancel
+        </button>
+        
       </form>
     </div>
   );

@@ -21,9 +21,12 @@ const categories = [
 
 const TaskManagement = () => {
   const [selectedCategory, setSelectedCategory] = useState("tasks");
+
   const userData = useSelector((state) => state.user);
   const navigate = useNavigate();
   console.log(userData,"tyu")
+
+  
 
   // Check access_token and redirect if not present
   
@@ -112,14 +115,12 @@ const TaskManagement = () => {
         <main className="flex-1 p-4 bg-gray-50">
           {/* Conditionally render based on selected category */}
           {selectedCategory === "tasks" ? (
-            <TaskList />
+            <TaskList  />
           ) : (
             <div className="text-center">
-              <h2 className="text-xl font-bold text-gray-700">Users Section</h2>
-              <p className="text-gray-500">
-                This is where user management would go.
-              </p>
-              <UserTable accessToken={access_token} />
+              
+             
+              <UserTable accessToken={access_token}  />
             </div>
           )}
         </main>
