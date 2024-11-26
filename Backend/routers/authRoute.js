@@ -10,5 +10,5 @@ router.post('/createuser',requireSignin,createUser)
 router.put('/updateuser',requireSignin,ChangeRole)
 //fetch all users of an admin
 router.get('/getusers',requireSignin,fetchalluserOfAdmin);
- 
+
 module.exports=router
