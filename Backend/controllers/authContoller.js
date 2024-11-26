@@ -113,6 +113,9 @@ exports.createUser= async(req,res)=>{
         let {fullname,email,password}=req.body
 console.log(fullname,email,password)
 let adminId=req.user?.id;
+console.log(req.user)
+console.log(adminId,"tryt")
+
         if(!email || !password || !fullname){
             return res.status(400).json({
                 success:false,
