@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from 'react-redux';
 import UserTable from "./Usertable";
+import axios from "axios";
+import { setAdmin } from "../../features/userSlice";
 
 
 // Sidebar categories
@@ -21,17 +23,47 @@ const TaskManagement = () => {
   const [selectedCategory, setSelectedCategory] = useState("tasks");
   const userData = useSelector((state) => state.user);
   const navigate = useNavigate();
-  console.log(userData)
+  console.log(userData,"tyu")
 
   // Check access_token and redirect if not present
   
-  const access_token = userData?.access_token;
+  
   useEffect(() => {
     if (!userData?.access_token) {
       navigate("/"); // Redirect to the homepage if no access_token
     }
   }, [userData, navigate]);
+  const access_token = userData?.access_token;
 
+  const dispatch = useDispatch();
+
+  const alldata=async()=>{
+    await axios.get(import.meta.env.VITE_SERVER_DOMAIN+"/task/getallTasks",
+      {
+        headers:{
+          'authorization': `${access_token}`
+        }
+      }
+      
+    ).then((data)=>{
+      dispatch(setAdmin(data));
+      return;
+    })
+    .catch(({response})=>{
+       console.log(response)
+       return;
+      
+    })
+
+  }
+
+  useEffect(() => {
+    if (access_token) {
+      alldata(dispatch, access_token); // Call the alldata function with dispatch and token
+    }
+  }, [dispatch, access_token]);
+
+ 
   return (
     <div className="pt-16">
       <div className="h-screen flex flex-col md:flex-row">
