@@ -298,6 +298,21 @@ exports.changePassword=async(req,res)=>{
     })
 }
 
+
+
+
+
+exports.deleteuser=async(req,res)=>{
+    try{
+        let id=req.params.id;
+        
+
+    }catch(err){
+        console.log(err)
+    }
+
+}
+
 // exports.uploadData=async(req,res)=>{
 //     console.log(req.user)
 //        res.send(req.body)
