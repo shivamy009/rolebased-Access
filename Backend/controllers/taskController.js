@@ -93,8 +93,27 @@ exports.Addtask= async(req,res)=>{
     }
  
 }
+exports.getAllTAskofUser=async(req,res)=>{
+    try {
+        // Find the admin by ID and populate the 'allTasks' field
+        let userId=req.user.id;
+        console.log(userId)
+        const  user = await userModel.findById(userId).populate("alltasks");
+        return res.status(200).json({   
+            success:true,
+            task:user.alltasks
+        })
+        // console.log(admin)
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+        return { success: false, message: "Failed to fetch tasks", error };
+    }
+}
+
  exports.updateTaskStatus = async (req, res) => {
     const { taskId, newStatus } = req.body;
+
+    console.log(taskId,newStatus)
   
     try {
       // Validate inputs
@@ -127,6 +146,7 @@ exports.Addtask= async(req,res)=>{
       });
     }
   };
+
 exports.createUser= async(req,res)=>{
     try{
         let {fullname,email,password}=req.body

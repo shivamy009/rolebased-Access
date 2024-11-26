@@ -43,7 +43,7 @@ const Homepage = () => {
        localStorage.setItem("access_token", data.sendData.access_token);
        dispatch(setAccessToken(data.sendData.access_token));
       if(data.sendData.role==='user'){
-        navigate('/')
+        navigate('/home-user')
       }else{
         
         navigate('/home-admin')

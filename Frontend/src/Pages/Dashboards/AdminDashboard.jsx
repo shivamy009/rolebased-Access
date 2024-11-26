@@ -112,7 +112,7 @@ const TaskManagement = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 bg-gray-50">
+        <main className="flex-1 p-4 bg-gray-50 overflow-auto">
           {/* Conditionally render based on selected category */}
           {selectedCategory === "tasks" ? (
             <TaskList  />

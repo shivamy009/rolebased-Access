@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import {
   FaCheck,
@@ -46,12 +47,25 @@ const TaskList = () => {
     setCurrentTask(null);
   };
 
-  const handleStatusUpdate = (newStatus) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === currentTask.id ? { ...task, status: newStatus } : task
-      )
-    );
+  const handleStatusUpdate = async(newStatus) => {
+
+    try {
+      const response = await axios.put(`${import.meta.env.VITE_SERVER_DOMAIN}/task/updateTask`, {
+        taskId: currentTask._id,
+        newStatus,
+      }, {
+        headers: {
+          authorization: `${userData?.access_token}`,
+        },
+      });
+      console.log(response.data);
+
+      
+    } catch (error) {
+      console.log(error.response?.data?.message || "Error updating task status");
+    }
+    
+
     handleClosePopup();
   };
 
