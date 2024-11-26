@@ -141,7 +141,7 @@ let adminId=req.user.id;
 
         let hashpassword = await bcrypt.hash(password,10)
         
-        const user = await new Admin ({
+        const user = await new User ({
                 fullname,email,password:hashpassword
         }).save()
         const admin = await Admin.findByIdAndUpdate(

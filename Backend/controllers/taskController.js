@@ -283,7 +283,7 @@ exports.changePassword=async(req,res)=>{
 exports.getAllTasks = async (req,res) => {
     try {
         // Find the admin by ID and populate the 'allTasks' field
-        let adminId=req.params.id;
+        let adminId=req.user.id;
         console.log(adminId)
         const admin = await Admin.findById(adminId).populate({
             path:'alltasks',
@@ -313,6 +313,39 @@ exports.getAllTasks = async (req,res) => {
         return { success: false, message: "Failed to fetch tasks", error };
     }
 };
+exports.getAllUsers=async(req,res)=>{
+    try {
+        // Find the admin by ID and populate the 'allTasks' field
+        let adminId=req.user.id;
+        console.log(adminId)
+        const admin = await Admin.findById(adminId).populate({
+            path:'allusers',
+            
+        });
+        // console.log(admin)
+
+        // const user = await User.findById(id).populate({
+        //     path: 'courses',
+        //     select: 'title description price', // Only include title, description, and price fields
+        //   });
+
+        if (!admin) {
+            return res.status(200).json({
+                success:false,
+                message:"Somrthing went wrong"       
+             })
+        }
+
+        // Return the populated tasks
+        return res.status(200).json({
+       success:true,
+       admin:admin.alltasks       
+    })
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+        return { success: false, message: "Failed to fetch tasks", error };
+    }
+}
 // exports.uploadData=async(req,res)=>{
 //     console.log(req.user)
 //        res.send(req.body)
