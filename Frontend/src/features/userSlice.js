@@ -25,6 +25,26 @@ const saveAdminToLocalStorage = (adminData) => {
   localStorage.setItem('adminData', JSON.stringify(adminData));
 };
 
+// Helper functions for admin task data in localStorage
+const loadAdminTaskFromLocalStorage = () => {
+  const savedAdmin = localStorage.getItem('adminTaskData');
+  return savedAdmin ? JSON.parse(savedAdmin) : null;
+};
+
+const saveAdminTaskToLocalStorage = (adminTaskData) => {
+  localStorage.setItem('adminTaskData', JSON.stringify(adminTaskData));
+};
+
+// Helper functions for admin users data in localStorage
+const loadAdminUsersFromLocalStorage = () => {
+  const savedAdmin = localStorage.getItem('adminUserData');
+  return savedAdmin ? JSON.parse(savedAdmin) : null;
+};
+
+const saveAdminUsersToLocalStorage = (adminUserData) => {
+  localStorage.setItem('adminUserData', JSON.stringify(adminUserData));
+};
+
 const clearAdminFromLocalStorage = () => {
   localStorage.removeItem('adminData');
 };
@@ -36,6 +56,8 @@ const userSlice = createSlice({
     userData: loadUserFromLocalStorage(), // Load user from localStorage
     access_token: localStorage.getItem('access_token') || null,
     adminData: loadAdminFromLocalStorage(), // Load admin from localStorage
+    adminTaskData: loadAdminTaskFromLocalStorage(), // Load admin from localStorage
+    adminUserData: loadAdminUsersFromLocalStorage(), // Load admin from localStorage
   },
   reducers: {
     setUser: (state, action) => {
@@ -58,6 +80,14 @@ const userSlice = createSlice({
       state.adminData = action.payload;
       saveAdminToLocalStorage(action.payload); // Save admin to localStorage
     },
+    setAdminTask: (state, action) => {
+      state.adminTaskData = action.payload;
+      saveAdminTaskToLocalStorage(action.payload); // Save admin to localStorage
+    },
+    setAdminUser: (state, action) => {
+      state.adminUserData = action.payload;
+      saveAdminUsersToLocalStorage(action.payload); // Save admin to localStorage
+    },
     clearAdmin: (state) => {
       state.adminData = null;
       clearAdminFromLocalStorage(); // Clear admin from localStorage
@@ -65,5 +95,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, clearUser, setAccessToken, clearAccessToken, setAdmin, clearAdmin } = userSlice.actions;
+export const { setUser, clearUser, setAccessToken, clearAccessToken, setAdmin, clearAdmin,setAdminTask,setAdminUser } = userSlice.actions;
 export default userSlice.reducer;

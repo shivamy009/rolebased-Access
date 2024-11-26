@@ -16,6 +16,7 @@ const UserTable = ({ accessToken }) => {
   const userData = useSelector((state) => state.user);
 
   // Fetch users data from Redux store
+  
   useEffect(() => {
     setUsers(userData?.adminData?.data?.user);
     setLoading(false);

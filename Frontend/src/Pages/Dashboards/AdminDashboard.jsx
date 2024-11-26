@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import UserTable from "./Usertable";
 import axios from "axios";
-import { setAdmin } from "../../features/userSlice";
+import {setAdmin, setAdminTask, setAdminUser} from "../../features/userSlice";
 
 
 // Sidebar categories
@@ -49,7 +49,10 @@ const TaskManagement = () => {
       }
       
     ).then((data)=>{
+      console.log(data,"dsff")
       dispatch(setAdmin(data));
+      dispatch(setAdminTask(data.data.task))
+      dispatch(setAdminUser(data.data.user))
       return;
     })
     .catch(({response})=>{
@@ -66,7 +69,7 @@ const TaskManagement = () => {
     }
   }, [dispatch, access_token]);
 
- 
+ console.log(userData,"tyuiiii")
   return (
     <div className="pt-16">
       <div className="h-screen flex flex-col md:flex-row">

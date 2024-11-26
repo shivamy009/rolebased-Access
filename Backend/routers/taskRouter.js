@@ -8,7 +8,7 @@ const router=express.Router();
 router.post('/addTask',requireSignin,Addtask)
 router.put('/updateTask',requireSignin,updateTaskStatus)
 router.get('/getallTasks',requireSignin,getAllTasks)
-router.get('/gettaskByUser',requireSignin,getAllTAskofUser)
+router.post('/deletetask/:id',deleteTask)
 
 
 
