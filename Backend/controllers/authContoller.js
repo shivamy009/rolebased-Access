@@ -112,13 +112,12 @@ exports.createUser= async(req,res)=>{
     try{
         let {fullname,email,password}=req.body
 console.log(fullname,email,password)
-let adminId=req.user.id;
+let adminId=req.user?.id;
         if(!email || !password || !fullname){
             return res.status(400).json({
                 success:false,
                 message:"Please Enter All field"
             })
-    
         }
         if(fullname.lenght<3){
             return res.status(401).json({

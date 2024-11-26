@@ -6,8 +6,7 @@ const { ChangeRole } = require('../controllers/RoleChange');
 const router=express.Router();
 router.post('/adminsignup',AdminSignup)
 router.post('/signin',signIn)
-router.post('/createuser',createUser)
+router.post('/createuser',requireSignin,createUser)
 router.put('/updateuser',ChangeRole)
-
 
 module.exports=router
