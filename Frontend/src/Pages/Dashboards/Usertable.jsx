@@ -3,10 +3,11 @@ import { FaTasks, FaTrash, FaUserEdit, FaPlus } from "react-icons/fa";
 import TaskForm from "./AssignTask";
 import axios from "axios"; // For API calls
 import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 
 const UserTable = ({accessToken}) => {
-  console.log(accessToken,"iop")
+  // console.log(accessToken,"iop")
   const [users, setUsers] = useState([]); // Store real-time user data
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [showAssignTaskModal, setShowAssignTaskModal] = useState(false);
@@ -35,7 +36,7 @@ const UserTable = ({accessToken}) => {
   //   }
   // }, [userData, navigate]);
   const handleAddUser = async () => {
-    await axios.post(import.meta.env.VITE_SERVER_DOMAIN+"/auth/createuser",{fullname:"shivam",email:"ewoijfio@gmail.com",password:"dedio@123"},
+    await axios.post(import.meta.env.VITE_SERVER_DOMAIN+"/auth/createuser",{...newUser},
       {
         headers:{
           'authorization': `${access_token}`
@@ -43,7 +44,9 @@ const UserTable = ({accessToken}) => {
       }
       
     ).then((data)=>{
-      dispatch(setAdmin(data));
+      // console.log(data.data.message)
+      toast.success(data.data.message)
+      setShowAddUserModal(false);
       return;
     })
     .catch(({response})=>{
@@ -71,6 +74,7 @@ const UserTable = ({accessToken}) => {
 
   return (
     <div className="p-4">
+      <Toaster/>
       <h1 className="text-xl font-bold mb-4">User Management</h1>
       <button
         onClick={() => setShowAddUserModal(true)}
