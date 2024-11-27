@@ -11,4 +11,5 @@ router.put('/updateuser',requireSignin,isAdmin,ChangeRole)
 //fetch all users of an admin
 router.get('/getusers',requireSignin,fetchalluserOfAdmin);
 router.post('/deleteuser/:id',deleteuser)
+//
 module.exports=router
