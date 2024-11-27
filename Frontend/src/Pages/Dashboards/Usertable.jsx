@@ -16,11 +16,11 @@ const UserTable = ({ accessToken }) => {
   const userData = useSelector((state) => state.user);
 
   // Fetch users data from Redux store
-  
+  let flg = 0;
   useEffect(() => {
     setUsers(userData?.adminData?.data?.user);
     setLoading(false);
-  }, [userData]);
+  }, [userData,flg]);
   
 
   const baseurl = import.meta.env.VITE_SERVER_DOMAIN;
@@ -39,6 +39,7 @@ const UserTable = ({ accessToken }) => {
           },
         }
       );
+      flg =1;
       toast.success(response.data.message);
       setShowAddUserModal(false);
     } catch (error) {
@@ -87,6 +88,22 @@ const UserTable = ({ accessToken }) => {
       toast.error(error.response?.data?.message || "Error changing role");
     }
   };
+  const handleDeleteUser = async (id) => {
+    try {
+      const response = await axios.post(
+        `${baseurl}/auth/deleteuser/${id}`,
+        {
+          headers: {
+            authorization: `${access_token}`,
+          },
+        }
+      );
+      flg =1;
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error deleting user");
+    }
+  }
 
   return (
     <div className="p-4">

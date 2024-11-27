@@ -114,6 +114,7 @@ const UserDashboard = () => {
     setIsModalOpen(false); // Close the modal without any changes
     setTaskToSubmit(null); // Clear the task ID
   };
+  console.log(tasks)
 
   return (
     <div className="flex flex-col md:flex-row h-screen pt-16">

@@ -71,7 +71,7 @@ const TaskManagement = () => {
 
  console.log(userData,"tyuiiii")
   return (
-    <div className="pt-16">
+    <div className="pt-16 ">
       <div className="h-screen flex flex-col md:flex-row">
         {/* Categories (mobile view above main content, sidebar on large screens) */}
         <nav className="w-full bg-white p-4 shadow-md md:hidden flex justify-between mb-4">
@@ -115,7 +115,7 @@ const TaskManagement = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 bg-gray-50 overflow-auto">
+        <main className="flex-1 -mt-12 bg-gray-50 ">
           {/* Conditionally render based on selected category */}
           {selectedCategory === "tasks" ? (
             <TaskList  />
