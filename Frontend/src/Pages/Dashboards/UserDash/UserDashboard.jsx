@@ -109,6 +109,7 @@ const UserDashboard = () => {
           task.id === taskToSubmit ? { ...task, status: "review" } : task
         )
       );
+      fetchTasks(); // Refetch tasks after updating the status
       setIsModalOpen(false); // Close the modal after submitting
       setTaskToSubmit(null); // Clear the task ID
       generateChartData(tasks); // Regenerate chart data after updating the task
