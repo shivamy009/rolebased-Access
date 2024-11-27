@@ -17,15 +17,34 @@ const UserTable = ({ accessToken }) => {
 
   // Fetch users data from Redux store
   let flg = 0;
+
+  // const access_token = userData?.access_token;
+  const access_token = userData?.access_token;
+  const fetchUser=async()=>{
+    try{
+      let user = await axios.get(import.meta.env.VITE_SERVER_DOMAIN+"/auth/getusers",{
+         
+          headers: { authorization: `${access_token}` },
+       
+      })
+      console.log(user.data.users,"yuihyutr");
+      setUsers(user.data.users)
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
   useEffect(() => {
-    setUsers(userData?.adminData?.data?.user);
+    // setUsers(userData?.adminData?.data?.user);
+    fetchUser()
     setLoading(false);
-  }, [userData,flg]);
+  }, []);
   
   console.log(users,"yhioth")
 
   const baseurl = import.meta.env.VITE_SERVER_DOMAIN;
-  const access_token = userData?.access_token;
+
 
   // adding a user 
 
@@ -41,6 +60,7 @@ const UserTable = ({ accessToken }) => {
         }
       );
       flg =1;
+      fetchUser()
       toast.success(response.data.message);
       setShowAddUserModal(false);
     } catch (error) {
@@ -101,34 +121,35 @@ const UserTable = ({ accessToken }) => {
       );
       flg =1;
       toast.success(response.data.message);
+      fetchUser()
     } catch (error) {
       toast.error(error.response?.data?.message || "Error deleting user");
     }
   }
 
   ///checking api
-    const alldata=async()=>{
-    await axios.get(import.meta.env.VITE_SERVER_DOMAIN+"/task/getallTasks",
-      {
-        headers:{
-          'authorization': `${access_token}`
-        }
-      }
+  //   const alldata=async()=>{
+  //   await axios.get(import.meta.env.VITE_SERVER_DOMAIN+"/task/getallTasks",
+  //     {
+  //       headers:{
+  //         'authorization': `${access_token}`
+  //       }
+  //     }
       
-    ).then((data)=>{
-      console.log(data,"dsff")
-      dispatch(setAdmin(data));
-      dispatch(setAdminTask(data.data.task))
-      dispatch(setAdminUser(data.data.user))
-      return;
-    })
-    .catch(({response})=>{
-       console.log(response)
-       return;
+  //   ).then((data)=>{
+  //     console.log(data,"dsff")
+  //     dispatch(setAdmin(data));
+  //     dispatch(setAdminTask(data.data.task))
+  //     dispatch(setAdminUser(data.data.user))
+  //     return;
+  //   })
+  //   .catch(({response})=>{
+  //      console.log(response)
+  //      return;
       
-    })
+  //   })
 
-  }
+  // }
 
   return (
     <div className="p-4">
