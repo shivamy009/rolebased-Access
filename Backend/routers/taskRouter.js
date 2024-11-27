@@ -1,7 +1,7 @@
 const express = require('express');
 // const { aa } = require('../controllers/authContoller');
 const { requireSignin } = require('../middleware/authmiddleware');
-const { Addtask, updateTaskStatus, getAllTasks, getAllTAskofUser } = require('../controllers/taskController');
+const { Addtask, updateTaskStatus, getAllTasks, deleteTask } = require('../controllers/taskController');
 
 const router=express.Router();
 

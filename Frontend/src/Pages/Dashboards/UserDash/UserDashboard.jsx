@@ -36,6 +36,7 @@ const UserDashboard = () => {
         }
       );
       setTasks(response.data.task);
+      // clg
       generateChartData(response.data.task); // Generate chart data after fetching tasks
     } catch (error) {
       console.error(error.response?.data?.message || "Error fetching tasks");
