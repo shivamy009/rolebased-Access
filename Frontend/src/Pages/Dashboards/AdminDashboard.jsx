@@ -92,7 +92,7 @@ const TaskManagement = () => {
         </nav>
 
         {/* Sidebar (hidden on mobile view, displayed on larger screens) */}
-        <aside className="w-1/6 bg-gray-100 p-4 shadow-md md:block hidden">
+        <aside className="w-1/6 bg-gray-100 p-4 pt-20 shadow-md md:block hidden">
           <h2 className="text-xl font-bold mb-4 text-gray-700">Admin Panel</h2>
           <nav>
             <ul className="space-y-4">
@@ -115,7 +115,7 @@ const TaskManagement = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 -mt-12 bg-gray-50 ">
+        <main className="flex-1  bg-gray-50 ">
           {/* Conditionally render based on selected category */}
           {selectedCategory === "tasks" ? (
             <TaskList  />
