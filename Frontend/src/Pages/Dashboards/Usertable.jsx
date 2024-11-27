@@ -22,6 +22,7 @@ const UserTable = ({ accessToken }) => {
     setLoading(false);
   }, [userData,flg]);
   
+  console.log(users,"yhioth")
 
   const baseurl = import.meta.env.VITE_SERVER_DOMAIN;
   const access_token = userData?.access_token;
@@ -103,6 +104,30 @@ const UserTable = ({ accessToken }) => {
     } catch (error) {
       toast.error(error.response?.data?.message || "Error deleting user");
     }
+  }
+
+  ///checking api
+    const alldata=async()=>{
+    await axios.get(import.meta.env.VITE_SERVER_DOMAIN+"/task/getallTasks",
+      {
+        headers:{
+          'authorization': `${access_token}`
+        }
+      }
+      
+    ).then((data)=>{
+      console.log(data,"dsff")
+      dispatch(setAdmin(data));
+      dispatch(setAdminTask(data.data.task))
+      dispatch(setAdminUser(data.data.user))
+      return;
+    })
+    .catch(({response})=>{
+       console.log(response)
+       return;
+      
+    })
+
   }
 
   return (

@@ -51,8 +51,8 @@ const TaskManagement = () => {
     ).then((data)=>{
       console.log(data,"dsff")
       dispatch(setAdmin(data));
-      dispatch(setAdminTask(data.data.task))
-      dispatch(setAdminUser(data.data.user))
+      // dispatch(setAdminTask(data.data.task))
+      // dispatch(setAdminUser(data.data.user))
       return;
     })
     .catch(({response})=>{
