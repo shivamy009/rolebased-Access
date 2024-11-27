@@ -6,7 +6,7 @@ const { ChangeRole } = require('../controllers/RoleChange');
 const router=express.Router();
 router.post('/adminsignup',AdminSignup)
 router.post('/signin',signIn)
-router.post('/createuser',requireSignin,isFinite,createUser)
+router.post('/createuser',requireSignin,isAdmin,createUser)
 router.put('/updateuser',requireSignin,isAdmin,ChangeRole)
 //fetch all users of an admin
 router.get('/getusers',requireSignin,fetchalluserOfAdmin);
