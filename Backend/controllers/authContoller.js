@@ -66,12 +66,16 @@ exports.AdminSignup= async(req,res)=>{
             })
     
         }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: 'Invalid email format' });
+        }
         if(fullname.lenght<3){
             return res.status(401).json({
                 success:false,
                 message:"Full name must be greater than 3 letter"
             })
-    
+            
         }
         let existinguser= await Admin.findOne({"email":email})
         let existinguser2= await User.findOne({"email":email})
